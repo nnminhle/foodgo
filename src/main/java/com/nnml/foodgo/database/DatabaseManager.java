@@ -30,18 +30,13 @@ public class DatabaseManager {
         return connectionBean;
     }
 
-    public static Connection getConnection() {
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
         ConnectionBean connectionBean = DatabaseManager.loadDriver();
-        try {
-            Class.forName(connectionBean.getDriverClassName());
-            return DriverManager.getConnection(
-                    connectionBean.getUrl(),
-                    connectionBean.getUsername(),
-                    connectionBean.getPassword()
-            );
-        } catch (ClassNotFoundException | SQLException e) {
-            System.err.println("Attempt to connect to " + connectionBean.getDatabase() + " database failed");
-            return null;
-        }
+        Class.forName(connectionBean.getDriverClassName());
+        return DriverManager.getConnection(
+                connectionBean.getUrl(),
+                connectionBean.getUsername(),
+                connectionBean.getPassword()
+        );
     }
 }
